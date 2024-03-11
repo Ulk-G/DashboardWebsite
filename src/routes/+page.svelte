@@ -1,7 +1,6 @@
 <script>
     import SensorGraph from "../components/SensorGraph.svelte";
 
-    // Website Variables
     let isConnected = false;
     let buoyFlippedTime = null;
     let buoyInDistress = false;
@@ -22,7 +21,6 @@
         humidity: false
     };
 
-    // Buoy Variables
     const WATER_DENSITY = 999.85       // kg/m^3 (@ 9°C)
     const GRAVITY = 9.81               // m/s^2
     const WHEEL_MASS = 1.515           // kg
@@ -41,6 +39,9 @@
     let km = 0  // Keel to Metacentre
     let gm = 0  // Metacentric Height
 
+    /**
+     * Reactive statement to update buoy variables based on the number of plates.
+     */
     $: {
         total_mass = WHEEL_MASS + plates * LB_TO_KG // Total mass including plates
         submerged_volume = total_mass / WATER_DENSITY  // Volume needed to be submerged to float
@@ -62,10 +63,17 @@
         gm = (kb + km) - kg
     }
 
+    /**
+     * Toggles the expansion state of a sensor graph.
+     * @param {string} sensor - The sensor to toggle the expansion state for.
+     */
     function toggleSensorExpansion(sensor) {
         expandedSensors[sensor] = !expandedSensors[sensor];
     }
 
+    /**
+     * Reactive statement to update accumulated data and check buoy distress status.
+     */
     $: {
         const timestamp = new Date().toISOString();
         const date = new Date(timestamp);
@@ -99,12 +107,18 @@
         }
     }
 
+    /**
+     * Reactive statements to update rotation styles based on sensor data.
+     */
     $: maxMagnitudeValue = Math.abs(sensorData.roll) > Math.abs(sensorData.pitch) ? sensorData.roll : sensorData.pitch;
     $: rotationStyle = `rotateZ(${-maxMagnitudeValue}deg)`;
-
     $: draftRotationStyle = `rotateZ(${-maxMagnitudeValue}deg)`;
     $: draftLineStyle = `transform: ${draftRotationStyle} translateY(${draftLineOffset - draught * (41 / WHEEL_THICKNESS)}px);`;
 
+    /**
+     * Connects to the serial device and starts reading sensor data.
+     * @async
+     */
     async function connectToSerial() {
         if ("serial" in navigator) {
             try {
@@ -170,6 +184,9 @@
         }
     }
 
+    /**
+     * Saves the accumulated sensor data to a JSON file.
+     */
     function saveAccumulatedDataToFile() {
         const jsonString = JSON.stringify(accumulatedData, null, 2);
         const blob = new Blob([jsonString], { type: 'application/json' });
@@ -523,5 +540,4 @@
     .stability-data .data-item {
         justify-content: space-between;
     }
-  </style>
-  
+</style>

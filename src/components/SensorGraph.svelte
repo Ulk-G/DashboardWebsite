@@ -6,8 +6,12 @@
 
     let chartCanvas;
     let chart;
-    const rollingInterval = 300; // Number of seconds to display in the rolling graph
+    const rollingInterval = 300;
 
+    /**
+     * Lifecycle function that runs when the component is mounted.
+     * Initialises the Chart.js instance.
+     */
     onMount(() => {
         const ctx = chartCanvas.getContext('2d');
         chart = new Chart(ctx, {
@@ -77,6 +81,9 @@
         });
     });
 
+    /**
+     * Reactive statement that updates the graph when the data changes.
+     */
     $: {
         if (chart) {
             const latestData = data.slice(-rollingInterval);
