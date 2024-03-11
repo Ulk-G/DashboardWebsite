@@ -7,11 +7,11 @@
     let draftLineOffset = 10; // 10 (min) and -31 (max)
     let accumulatedData = [];
     let sensorData = {
-      roll: 0,
-      pitch: 0,
-      pressure: 0,
-      temperature: 0,
-      humidity: 0
+        roll: 0,
+        pitch: 0,
+        pressure: 0,
+        temperature: 0,
+        humidity: 0
     };
     let expandedSensors = {
         roll: false,

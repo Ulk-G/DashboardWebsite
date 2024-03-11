@@ -55,6 +55,28 @@ npm run preview
 
 To receive live sensor data, ensure your buoy's serial device is connected to your computer. Use the "Connect to Serial Device" button within the dashboard to establish a connection.
 
+## Serial Data Format
+
+To ensure seamless communication between the buoy and the dashboard, the serial data must be formatted as a JSON object like this:
+
+```c
+void displayAllSensorDataJSON() {
+  Serial.print("{\"roll\":");
+  Serial.print(roll);
+  Serial.print(",\"pitch\":");
+  Serial.print(pitch);
+  Serial.print(",\"pressure\":");
+  Serial.print(pressure);
+  Serial.print(",\"temperature\":");
+  Serial.print(temperature);
+  Serial.print(",\"humidity\":");
+  Serial.print(humidity);
+  Serial.println("}");
+}
+```
+
+This structure allows the dashboard to accurately parse and display sensor readings.
+
 ## Project Structure
 
 - `src/components`: Contains Svelte components, including `SensorGraph.svelte` for rendering sensor data charts.
